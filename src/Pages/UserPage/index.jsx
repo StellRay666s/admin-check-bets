@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import { setUser } from "../../Redux/slices/userSlice";
 
 function UserPage() {
-  const { id } = useParams();
+  const query = useParams();
   const token = localStorage.getItem("token");
   const [name, setName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -17,14 +17,17 @@ function UserPage() {
   const [tariffs, setTarifs] = React.useState([]);
   const [isAddPartner, setIsAddPatner] = React.useState(false);
 
-  console.log(isAddPartner);
-
-  async function getUser() {
-    const response = await axiosClient.get(`/getUser/id=${id}`, {
+  async function getUser(query) {
+    const response = await axiosClient.get(`/getUser`, {
+      params: {
+        id: query.id,
+      },
       headers: {
         authorization: token,
       },
     });
+
+    console.log(response.data);
 
     setName(response.data.name);
     setLastName(response.data.lastname);
@@ -38,8 +41,8 @@ function UserPage() {
   }
 
   React.useEffect(() => {
-    getUser();
-  }, []);
+    getUser(query);
+  }, [query.id]);
 
   return (
     <div className={style.wrapper_user_page}>
