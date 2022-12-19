@@ -26,7 +26,6 @@ function UserPage() {
       },
     });
 
-    console.log(response.data);
     setName(response.data.name);
     setLastName(response.data.lastname);
     setPhone(response.data.phone);
