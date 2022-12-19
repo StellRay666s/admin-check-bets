@@ -1,23 +1,32 @@
-import "./App.css";
+import React from "react";
+import Router from "./Router";
+import { useDispatch } from "react-redux";
+import { setUser } from "./Redux/slices/userSlice";
+import { axiosClient } from "./axiosClient";
 
 function App() {
+  const dispatch = useDispatch();
+
+  async function getMe() {
+    const response = await axiosClient.get("/getMe", {
+      headers: {
+        authorization: localStorage.getItem("token"),
+      },
+    });
+
+    if (response.status === 200) {
+      dispatch(setUser(response.data.user));
+    }
+  }
+
+  React.useEffect(() => {
+    getMe();
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router />s
+    </>
   );
 }
 

@@ -1,0 +1,15 @@
+.wrapper_user_page {
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 40%;
+  height: 500px;
+  box-shadow: 1px 1px 10px black;
+  padding: 5px 25px;
+}
+
+.wrapper_user_page .use_input {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  gap: 10px;
+}
