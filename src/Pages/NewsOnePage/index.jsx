@@ -17,7 +17,7 @@ function NewsOnePage() {
       const file = e.target.files[0];
       formData.append("image", file);
       const { data } = await axiosClient.post("/upload", formData);
-      console.log(data);
+      console.log(file);
       setImage(data.url);
     } catch (err) {
       console.log(err);

@@ -18,11 +18,13 @@ function App() {
     });
     if (response.status === 200) {
       navigate("/");
+    } else {
+      navigate("/login");
     }
   }
 
   React.useEffect(() => {
-    if (localStorage.getItem("token") === "") {
+    if (!isAuth) {
       navigate("/login");
     }
   }, [isAuth]);

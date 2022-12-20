@@ -8,13 +8,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../axiosClient";
 
 function UsersPage() {
   const [user, setUser] = React.useState([]);
   const token = localStorage.getItem("token");
-
+  const navigate = useNavigate();
   async function getUsers() {
     const response = await axiosClient.get("/getUsers", {
       headers: {
@@ -23,6 +23,9 @@ function UsersPage() {
     });
 
     setUser(response.data);
+    if (response.status === 401) {
+      navigate("/login");
+    }
   }
 
   React.useEffect(() => {

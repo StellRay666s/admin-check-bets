@@ -6,6 +6,7 @@ import { TextField, Button } from "@mui/material";
 import { axiosClient } from "../../axiosClient";
 
 import style from "./index.module.scss";
+import axios from "axios";
 
 function LoginPage() {
   const [email, setEmail] = React.useState("");
@@ -14,7 +15,7 @@ function LoginPage() {
   const dispatch = useDispatch();
 
   async function login() {
-    const response = await axiosClient.post("/login", {
+    const response = await axios.post("http://localhost:8000/login", {
       email: email,
       password: password,
     });
