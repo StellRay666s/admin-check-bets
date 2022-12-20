@@ -1,11 +1,14 @@
 import React from "react";
 import Router from "./Router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./Redux/slices/userSlice";
 import { axiosClient } from "./axiosClient";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuth = useSelector((state) => state.user.isAuth);
 
   async function getMe() {
     const response = await axiosClient.get("/getMe", {
@@ -13,19 +16,20 @@ function App() {
         authorization: localStorage.getItem("token"),
       },
     });
-
     if (response.status === 200) {
-      dispatch(setUser(response.data.user));
+      navigate("/");
     }
   }
 
   React.useEffect(() => {
-    getMe();
-  });
+    if (localStorage.getItem("token") === "") {
+      navigate("/login");
+    }
+  }, [isAuth]);
 
   return (
     <>
-      <Router />s
+      <Router />
     </>
   );
 }

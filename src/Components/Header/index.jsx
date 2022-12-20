@@ -3,7 +3,6 @@ import style from "./index.module.scss";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
@@ -11,10 +10,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { clearUser } from "../../Redux/slices/userSlice";
+import { useDispatch } from "react-redux";
+
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState();
   const [anchorElUser, setAnchorElUser] = React.useState();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -27,15 +31,18 @@ function Header() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  const handleCloseUserMenu = () => {};
 
   const pages = [
-    { title: "Пользователи", path: "/users" },
+    { title: "Пользователи", path: "/" },
     { title: "Новости", path: "/news" },
   ];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+  function logout() {
+    dispatch(clearUser);
+    navigate("/login");
+    localStorage.setItem("token", "");
+  }
 
   return (
     <>
@@ -59,7 +66,6 @@ function Header() {
             >
               Check Bets
             </Typography>
-
             <Typography
               variant="h5"
               noWrap
@@ -76,6 +82,7 @@ function Header() {
                 textDecoration: "none",
               }}
             ></Typography>
+
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page, index) => (
                 <Link to={page.path}>
@@ -85,6 +92,9 @@ function Header() {
                 </Link>
               ))}
             </Box>
+            <Button onClick={() => logout()} color="inherit">
+              Выйти
+            </Button>
           </Toolbar>
         </Container>
       </AppBar>

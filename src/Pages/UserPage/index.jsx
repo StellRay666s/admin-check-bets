@@ -26,9 +26,6 @@ function UserPage() {
         authorization: token,
       },
     });
-
-    console.log(response.data);
-
     setName(response.data.name);
     setLastName(response.data.lastname);
     setPhone(response.data.phone);
@@ -39,6 +36,37 @@ function UserPage() {
   function handleChangeCheckbox() {
     setIsAddPatner(!isAddPartner);
   }
+
+  async function saveChangesOnAdminUsers() {
+    const response = await axiosClient.patch("/saveChangesOnAdminUsers", {
+      id: query.id,
+      name: name,
+      lastname: lastName,
+    });
+    if (response.status === 200) {
+      console.log("Данные сохранены");
+    }
+  }
+
+  async function changePartnerTariff() {
+    const response = await axiosClient.patch("/addPartnerTariff", {
+      id: query.id,
+    });
+    if (response.status === 200) {
+      console.log("Тариф добавлен");
+    }
+  }
+
+  async function changeDataProfile() {
+    if (isAddPartner) {
+      await changePartnerTariff();
+      await saveChangesOnAdminUsers();
+    } else {
+      await saveChangesOnAdminUsers();
+    }
+  }
+
+  console.log(tariffs.find((item) => item === "Базовый"));
 
   React.useEffect(() => {
     getUser(query);
@@ -78,11 +106,24 @@ function UserPage() {
           label="Эл.Почта"
           variant="standard"
         />
+        <TextField
+          disabled={true}
+          id="standard-basic"
+          value={tariffs}
+          label="Тарифы"
+          variant="standard"
+        />
+
         <FormControlLabel
           control={<Checkbox onChange={() => handleChangeCheckbox()} />}
+          disabled={
+            tariffs.find((item) => item === "Партнерский") ? true : false
+          }
           label="Добавить пользователю партнерский тариф"
         />
-        <Button variant="contained">Сохранить изменения</Button>
+        <Button onClick={() => changeDataProfile()} variant="contained">
+          Сохранить изменения
+        </Button>
       </div>{" "}
     </div>
   );

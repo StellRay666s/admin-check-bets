@@ -20,9 +20,10 @@ function LoginPage() {
     });
 
     if (response.status === 200) {
-      navigate("/users");
       dispatch(setUser(response.data.user));
+
       localStorage.setItem("token", response.data.token);
+      navigate("/");
     }
   }
 
