@@ -6,6 +6,7 @@ import { TextField, Checkbox, FormControlLabel, Button } from "@mui/material";
 
 import Paper from "@mui/material/Paper";
 import { setUser } from "../../Redux/slices/userSlice";
+import axios from "axios";
 
 function UserPage() {
   const query = useParams();
@@ -18,7 +19,7 @@ function UserPage() {
   const [isAddPartner, setIsAddPatner] = React.useState(false);
 
   async function getUser(query) {
-    const response = await axiosClient.get(`/getUser`, {
+    const response = await axiosClient.get(`https://api.check-bets.online/getUser`, {
       params: {
         id: query.id,
       },
@@ -38,7 +39,7 @@ function UserPage() {
   }
 
   async function saveChangesOnAdminUsers() {
-    const response = await axiosClient.patch("/saveChangesOnAdminUsers", {
+    const response = await axios.patch("https://api.check-bets.online/saveChangesOnAdminUsers", {
       id: query.id,
       name: name,
       lastname: lastName,
@@ -49,7 +50,7 @@ function UserPage() {
   }
 
   async function changePartnerTariff() {
-    const response = await axiosClient.patch("/addPartnerTariff", {
+    const response = await axiosClient.patch("https://api.check-bets.online/addPartnerTariff", {
       id: query.id,
     });
     if (response.status === 200) {

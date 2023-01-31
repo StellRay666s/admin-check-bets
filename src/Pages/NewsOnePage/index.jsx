@@ -16,7 +16,7 @@ function NewsOnePage() {
       const formData = new FormData();
       const file = e.target.files[0];
       formData.append("image", file);
-      const { data } = await axiosClient.post("/upload", formData);
+      const { data } = await axiosClient.post("https://api.check-bets.online/upload", formData);
       console.log(file);
       setImage(data.url);
     } catch (err) {
@@ -25,7 +25,7 @@ function NewsOnePage() {
   }
 
   async function getOneNews() {
-    const response = await axiosClient.get(`/news/${query.id}`, {
+    const response = await axiosClient.get(`https://api.check-bets.online/news/${query.id}`, {
       params: {
         id: query.id,
       },
@@ -39,7 +39,7 @@ function NewsOnePage() {
   }
 
   async function updateNews() {
-    const response = await axiosClient.patch(`/news/${query.id}`, {
+    const response = await axiosClient.patch(`https://api.check-bets.online/news/${query.id}`, {
       title: title,
       description: description,
       image: image,
@@ -75,7 +75,7 @@ function NewsOnePage() {
           rows={10}
           maxRows={10}
         />
-        <img src={`http://localhost:8000${image}`} />
+        <img src={`https://api.check-bets.online${image}`} />
         <Box
           onClick={() => ref.current.click()}
           sx={{ "& > :not(style)": { m: 1 } }}

@@ -16,7 +16,7 @@ function UsersPage() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   async function getUsers() {
-    const response = await axiosClient.get("/getUsers", {
+    const response = await axiosClient.get("https://api.check-bets.online/getUsers", {
       headers: {
         authorization: token,
       },

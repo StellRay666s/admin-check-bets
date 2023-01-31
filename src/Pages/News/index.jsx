@@ -20,7 +20,7 @@ function NewsPage() {
   const navigate = useNavigate();
 
   async function getNews() {
-    const response = await axiosClient.get("/news");
+    const response = await axiosClient.get("https://api.check-bets.online/news");
     setNews(response.data);
   }
 
