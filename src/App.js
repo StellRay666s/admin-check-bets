@@ -24,9 +24,9 @@ function App() {
   }
 
   React.useEffect(() => {
-    if (!isAuth) {
-      navigate("/login");
-    }
+    // if (!isAuth) {
+    //   navigate("/login");
+    // }
   }, [isAuth]);
 
   return (
