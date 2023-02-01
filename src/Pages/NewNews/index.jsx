@@ -121,7 +121,7 @@ function NewNews() {
         <div>
 </div>
       </div>
-        <div dangerouslySetInnerHTML={{ __html: data.description }} />
+        <div dangerouslySetInnerHTML={{ __html: data?.description }} />
     </div>
   );
 }
