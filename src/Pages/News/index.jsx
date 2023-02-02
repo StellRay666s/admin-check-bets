@@ -21,7 +21,7 @@ function NewsPage() {
 
   async function getNews() {
     const response = await axiosClient.get("https://api.check-bets.online/news");
-    setNews(response.data);
+    setNews(response.data.rows);
   }
 
   React.useEffect(() => {

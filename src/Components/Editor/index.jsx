@@ -18,12 +18,18 @@ import {
   link,
 } from "suneditor/src/plugins";
 import "suneditor/dist/css/suneditor.min.css";
-function Editor({ handleChangeFile, content, setContent }) {
-  const editor = React.useRef();
+function Editor({ handleChangeFile, content = '', setContent, description }) {
+  const editor = React.useRef(); 
+  console.log(content)
 
   const getSunEditorInstance = (sunEditor) => {
     editor.current = sunEditor;
   };
+  const [data, setData] = React.useState()
+
+  React.useEffect(()=>{
+    // setData(description)
+  },[])
 
   function handleImageUploadBefore(
     targetImgElement,
@@ -49,6 +55,7 @@ function Editor({ handleChangeFile, content, setContent }) {
   return (
     <div>
       <SunEditor
+        // appendContents={content}
         onChange={(text) => setContent(text)}
         onImageUpload={handleImageUploadBefore}
         lang={"en"}

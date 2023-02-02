@@ -2,7 +2,11 @@ import React from "react";
 import { TextField, Fab, Box, Button, ImageListItem } from "@mui/material";
 import style from "./index.module.scss";
 import { axiosClient } from "../../axiosClient";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
+import Editor from "../../Components/Editor";
 
 function NewsOnePage() {
   const [title, setTitle] = React.useState("");
@@ -10,6 +14,9 @@ function NewsOnePage() {
   const [image, setImage] = React.useState("");
   const query = useParams();
   const ref = React.useRef(null);
+  const navigate = useNavigate()
+  const [content, setContent] = React.useState()
+
 
   async function handleChangeFile(e) {
     try {
@@ -31,9 +38,12 @@ function NewsOnePage() {
       },
     });
 
+    console.log(response)
+
+    console.log(response.data.description)
     if (response.status === 200) {
       setTitle(response.data.title);
-      setDescription(response.data.description);
+      setContent(response.data.description);
       setImage(response.data.image);
     }
   }
@@ -50,6 +60,15 @@ function NewsOnePage() {
     }
   }
 
+  async function deleteNews(){
+    const response = await axios.delete(`https://api.check-bets.online/news/${query.id}`)
+    if(response.status === 200){
+      navigate('/news')
+      toast.success('Новость удалена')
+    }
+  }
+
+
   React.useEffect(() => {
     getOneNews();
   }, [query.id]);
@@ -65,7 +84,7 @@ function NewsOnePage() {
           label="Заголовок"
           variant="standard"
         />
-        <TextField
+        {/* <TextField
           id="standard-basic"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -74,8 +93,10 @@ function NewsOnePage() {
           multiline
           rows={10}
           maxRows={10}
-        />
-        <img src={`https://api.check-bets.online${image}`} />
+        /> */}
+
+         <Editor content ={content} setContent={setContent}/> 
+        {/* <img src={`https://api.check-bets.online${image}`} /> */}
         <Box
           onClick={() => ref.current.click()}
           sx={{ "& > :not(style)": { m: 1 } }}
@@ -88,6 +109,20 @@ function NewsOnePage() {
               hidden
             />{" "}
             Добавить картинку
+          </Fab>
+        </Box>
+        <Box
+          onClick={() => deleteNews()}
+          sx={{ "& > :not(style)": { m: 1 } }}
+        >
+          <Fab variant="extended" size="small" color="primary" aria-label="add">
+            <input
+              onChange={(e) => handleChangeFile(e)}
+              ref={ref}
+              type={"file"}
+              hidden
+            />{" "}
+          Удалить новость
           </Fab>
         </Box>
         <Button onClick={() => updateNews()} variant="contained">
