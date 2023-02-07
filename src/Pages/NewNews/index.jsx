@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { axiosClient } from "../../axiosClient";
 import Editor from "../../Components/Editor";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 function NewNews() {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -15,17 +15,14 @@ function NewNews() {
   const ref = React.useRef(null);
   const [blockImage, setBlockImage] = React.useState([]);
   const [content, setContent] = React.useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   async function handleChangeFile(e) {
     try {
       const formData = new FormData();
       const file = e.target.files[0];
       console.log(file);
       formData.append("image", file);
-      const { data, status } = await axios.post(
-        "https://api.check-bets.online/upload",
-        formData
-      );
+      const { data, status } = await axiosClient.post("/upload", formData);
       setImage(data.url);
     } catch (err) {
       console.log(err);
@@ -33,26 +30,24 @@ function NewNews() {
   }
 
   async function updateNews() {
+    try {
+      const response = await axiosClient.post(`http://localhost:8000/news`, {
+        title: title,
+        description: content,
+        image: image,
+      });
 
-    try{
-    const response = await axios.post(`https://api.check-bets.online/news`, {
-      title: title,
-      description: content,
-      image: image,
-    });
-
-    if (response.status === 200) {
-      console.log("Новость обновлена");
-      toast.success('Новость добавлена')
-      navigate('/news')
-    
-    }}catch(err){
-      toast.error('Ошибка')
+      if (response.status === 200) {
+        console.log("Новость обновлена");
+        toast.success("Новость добавлена");
+        navigate("/news");
+      }
+    } catch (err) {
+      toast.error("Ошибка");
     }
   }
 
   const [data, setData] = React.useState();
-
 
   React.useEffect(() => {}, [query.id]);
 
@@ -80,7 +75,7 @@ function NewNews() {
           Добавить картинку
         </Fab>
       </Box>
-      <img style={{ width: 500 }} src={`https://api.check-bets.online${image}`} />
+      <img style={{ width: 500 }} src={`http://localhost:8000${image}`} />
       <div className={style.use_input}>
         <TextField
           id="standard-basic"
@@ -114,7 +109,7 @@ function NewNews() {
         </Button>
         <div></div>
       </div>
-        <div dangerouslySetInnerHTML={{ __html: data?.description }} />
+      <div dangerouslySetInnerHTML={{ __html: data?.description }} />
     </div>
   );
 }

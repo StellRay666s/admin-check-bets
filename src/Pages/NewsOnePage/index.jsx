@@ -3,8 +3,8 @@ import { TextField, Fab, Box, Button, ImageListItem } from "@mui/material";
 import style from "./index.module.scss";
 import { axiosClient } from "../../axiosClient";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Editor from "../../Components/Editor";
 
@@ -14,16 +14,15 @@ function NewsOnePage() {
   const [image, setImage] = React.useState("");
   const query = useParams();
   const ref = React.useRef(null);
-  const navigate = useNavigate()
-  const [content, setContent] = React.useState()
-
+  const navigate = useNavigate();
+  const [content, setContent] = React.useState();
 
   async function handleChangeFile(e) {
     try {
       const formData = new FormData();
       const file = e.target.files[0];
       formData.append("image", file);
-      const { data } = await axiosClient.post("https://api.check-bets.online/upload", formData);
+      const { data } = await axiosClient.post("/upload", formData);
       console.log(file);
       setImage(data.url);
     } catch (err) {
@@ -32,15 +31,18 @@ function NewsOnePage() {
   }
 
   async function getOneNews() {
-    const response = await axiosClient.get(`https://api.check-bets.online/news/${query.id}`, {
-      params: {
-        id: query.id,
-      },
-    });
+    const response = await axiosClient.get(
+      `http://localhost:8000/news/${query.id}`,
+      {
+        headers: {
+          AcceptEncoding: "gzip",
+        },
+        params: {
+          id: query.id,
+        },
+      }
+    );
 
-    console.log(response)
-
-    console.log(response.data.description)
     if (response.status === 200) {
       setTitle(response.data.title);
       setContent(response.data.description);
@@ -48,26 +50,36 @@ function NewsOnePage() {
     }
   }
 
+  const [newContent, setNewContent] = React.useState("");
+
+  function setNewData(data) {
+    setContent(data);
+  }
+
   async function updateNews() {
-    const response = await axiosClient.patch(`https://api.check-bets.online/news/${query.id}`, {
-      title: title,
-      description: description,
-      image: image,
-    });
+    const response = await axiosClient.patch(
+      `http://localhost:8000/news/${query.id}`,
+      {
+        title: title,
+        description: newContent,
+        image: image,
+      }
+    );
 
     if (response.status === 200) {
       console.log("Новость обновлена");
     }
   }
 
-  async function deleteNews(){
-    const response = await axios.delete(`https://api.check-bets.online/news/${query.id}`)
-    if(response.status === 200){
-      navigate('/news')
-      toast.success('Новость удалена')
+  async function deleteNews() {
+    const response = await axios.delete(
+      `http://localhost:8000/news/${query.id}`
+    );
+    if (response.status === 200) {
+      navigate("/news");
+      toast.success("Новость удалена");
     }
   }
-
 
   React.useEffect(() => {
     getOneNews();
@@ -95,7 +107,11 @@ function NewsOnePage() {
           maxRows={10}
         /> */}
 
-         <Editor content ={content} setContent={setContent}/> 
+        <Editor
+          content={content}
+          setContent={setContent}
+          setNewContent={setNewContent}
+        />
         {/* <img src={`https://api.check-bets.online${image}`} /> */}
         <Box
           onClick={() => ref.current.click()}
@@ -111,10 +127,7 @@ function NewsOnePage() {
             Добавить картинку
           </Fab>
         </Box>
-        <Box
-          onClick={() => deleteNews()}
-          sx={{ "& > :not(style)": { m: 1 } }}
-        >
+        <Box onClick={() => deleteNews()} sx={{ "& > :not(style)": { m: 1 } }}>
           <Fab variant="extended" size="small" color="primary" aria-label="add">
             <input
               onChange={(e) => handleChangeFile(e)}
@@ -122,7 +135,7 @@ function NewsOnePage() {
               type={"file"}
               hidden
             />{" "}
-          Удалить новость
+            Удалить новость
           </Fab>
         </Box>
         <Button onClick={() => updateNews()} variant="contained">

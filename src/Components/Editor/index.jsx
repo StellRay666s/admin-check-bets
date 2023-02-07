@@ -18,18 +18,17 @@ import {
   link,
 } from "suneditor/src/plugins";
 import "suneditor/dist/css/suneditor.min.css";
-function Editor({ handleChangeFile, content = '', setContent, description }) {
-  const editor = React.useRef(); 
-  console.log(content)
+function Editor({ handleChangeFile, content, setContents, setNewContent }) {
+  const editor = React.useRef();
+  const [data, setData] = React.useState(content);
+
+  React.useEffect(() => {
+    setNewContent(data);
+  }, [data]);
 
   const getSunEditorInstance = (sunEditor) => {
     editor.current = sunEditor;
   };
-  const [data, setData] = React.useState()
-
-  React.useEffect(()=>{
-    // setData(description)
-  },[])
 
   function handleImageUploadBefore(
     targetImgElement,
@@ -37,30 +36,16 @@ function Editor({ handleChangeFile, content = '', setContent, description }) {
     state,
     imageInfo,
     remainingFilesCount
-  ) {
-    // setImage(imageInfo)
-  }
-
-  // React.useEffect(()=>{
-
-  // // if(images != ''){
-  // // console.log(window.atob(images?.src))
-  // // }
-  // },[images])
-
-  React.useEffect(() => {
-    console.log(content);
-  }, [content]);
+  ) {}
 
   return (
     <div>
       <SunEditor
-        // appendContents={content}
-        onChange={(text) => setContent(text)}
-        onImageUpload={handleImageUploadBefore}
         lang={"en"}
         height="1000px"
         max-width="800px"
+        setContents={content}
+        onChange={setData}
         setOptions={{
           showPathLabel: false,
 

@@ -19,7 +19,7 @@ function UserPage() {
   const [isAddPartner, setIsAddPatner] = React.useState(false);
 
   async function getUser(query) {
-    const response = await axiosClient.get(`https://api.check-bets.online/getUser`, {
+    const response = await axiosClient.get(`http://localhost:8000/getUser`, {
       params: {
         id: query.id,
       },
@@ -39,20 +39,31 @@ function UserPage() {
   }
 
   async function saveChangesOnAdminUsers() {
-    const response = await axios.patch("https://api.check-bets.online/saveChangesOnAdminUsers", {
-      id: query.id,
-      name: name,
-      lastname: lastName,
-    });
+    const response = await axiosClient.patch(
+      "http://localhost:8000/saveChangeOnAdmin",
+      {
+        id: query.id,
+        name: name,
+        lastname: lastName,
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     if (response.status === 200) {
       console.log("Данные сохранены");
     }
   }
 
   async function changePartnerTariff() {
-    const response = await axiosClient.patch("https://api.check-bets.online/addPartnerTariff", {
-      id: query.id,
-    });
+    const response = await axiosClient.patch(
+      "http://localhost:8000/addPartnerTariff",
+      {
+        id: query.id,
+      }
+    );
     if (response.status === 200) {
       console.log("Тариф добавлен");
     }

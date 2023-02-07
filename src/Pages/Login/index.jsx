@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { setUser } from "../../Redux/slices/userSlice";
 import { TextField, Button } from "@mui/material";
 import { axiosClient } from "../../axiosClient";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import style from "./index.module.scss";
 import axios from "axios";
@@ -17,19 +17,20 @@ function LoginPage() {
   const dispatch = useDispatch();
 
   async function login() {
-    try{
-    const response = await axios.post("https://api.check-bets.online/login", {
-      email: email,
-      password: password,
-    });
+    try {
+      const response = await axiosClient.post("http://localhost:8000/login", {
+        email: email,
+        password: password,
+      });
 
-    if (response.status === 200) {
-      dispatch(setUser(response.data.user));
-      toast.success('Авторизация прошла успешно')
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
-    }}catch(err){
-      toast.error('Неверный логин или пароль!')
+      if (response.status === 200) {
+        dispatch(setUser(response.data.user));
+        toast.success("Авторизация прошла успешно");
+        localStorage.setItem("token", response.data.token);
+        navigate("/");
+      }
+    } catch (err) {
+      toast.error("Неверный логин или пароль!");
     }
   }
 
