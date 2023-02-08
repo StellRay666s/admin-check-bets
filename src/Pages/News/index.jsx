@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import { Container, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../axiosClient";
+import axios from "axios";
 
 function NewsPage() {
   const [news, setNews] = React.useState([]);
@@ -20,7 +21,7 @@ function NewsPage() {
   const navigate = useNavigate();
 
   async function getNews() {
-    const response = await axiosClient.get("http://localhost:8000/news");
+    const response = await axios.get(`${process.env.REACT_APP_API_KEY}/news`);
     setNews(response.data.rows);
   }
 

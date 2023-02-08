@@ -30,6 +30,8 @@ function Editor({ handleChangeFile, content, setContents, setNewContent }) {
     editor.current = sunEditor;
   };
 
+ 
+
   function handleImageUploadBefore(
     targetImgElement,
     index,

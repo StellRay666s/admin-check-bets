@@ -17,12 +17,13 @@ function NewsOnePage() {
   const navigate = useNavigate();
   const [content, setContent] = React.useState();
 
+  
   async function handleChangeFile(e) {
     try {
       const formData = new FormData();
       const file = e.target.files[0];
       formData.append("image", file);
-      const { data } = await axiosClient.post("/upload", formData);
+      const { data } = await axios.post(`${process.env.REACT_APP_API_KEY}/upload`, formData);
       console.log(file);
       setImage(data.url);
     } catch (err) {
@@ -31,8 +32,8 @@ function NewsOnePage() {
   }
 
   async function getOneNews() {
-    const response = await axiosClient.get(
-      `http://localhost:8000/news/${query.id}`,
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_KEY}/news/${query.id}`,
       {
         headers: {
           AcceptEncoding: "gzip",
@@ -52,13 +53,18 @@ function NewsOnePage() {
 
   const [newContent, setNewContent] = React.useState("");
 
+  React.useEffect(()=>{
+    console.log(newContent)
+
+  },[newContent])
+
   function setNewData(data) {
     setContent(data);
   }
 
   async function updateNews() {
     const response = await axiosClient.patch(
-      `http://localhost:8000/news/${query.id}`,
+      `${process.env.REACT_APP_API_KEY}/news/${query.id}`,
       {
         title: title,
         description: newContent,
@@ -73,7 +79,7 @@ function NewsOnePage() {
 
   async function deleteNews() {
     const response = await axios.delete(
-      `http://localhost:8000/news/${query.id}`
+      `${process.env.REACT_APP_API_KEY}/news/${query.id}`
     );
     if (response.status === 200) {
       navigate("/news");
@@ -112,7 +118,7 @@ function NewsOnePage() {
           setContent={setContent}
           setNewContent={setNewContent}
         />
-        {/* <img src={`https://api.check-bets.online${image}`} /> */}
+        <img src={`${process.env.REACT_APP_API_KEY}${image}`} />
         <Box
           onClick={() => ref.current.click()}
           sx={{ "& > :not(style)": { m: 1 } }}
@@ -129,12 +135,6 @@ function NewsOnePage() {
         </Box>
         <Box onClick={() => deleteNews()} sx={{ "& > :not(style)": { m: 1 } }}>
           <Fab variant="extended" size="small" color="primary" aria-label="add">
-            <input
-              onChange={(e) => handleChangeFile(e)}
-              ref={ref}
-              type={"file"}
-              hidden
-            />{" "}
             Удалить новость
           </Fab>
         </Box>

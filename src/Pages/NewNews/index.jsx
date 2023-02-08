@@ -16,36 +16,45 @@ function NewNews() {
   const [blockImage, setBlockImage] = React.useState([]);
   const [content, setContent] = React.useState();
   const navigate = useNavigate();
+  const [newContent, setNewContent] = React.useState("");
+
+
   async function handleChangeFile(e) {
     try {
       const formData = new FormData();
       const file = e.target.files[0];
       console.log(file);
       formData.append("image", file);
-      const { data, status } = await axiosClient.post("/upload", formData);
+      const { data, status } = await axios.post(`${process.env.REACT_APP_API_KEY}/upload`, formData);
       setImage(data.url);
     } catch (err) {
       console.log(err);
     }
   }
 
+  
+
   async function updateNews() {
     try {
-      const response = await axiosClient.post(`http://localhost:8000/news`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_KEY}/news`, {
         title: title,
-        description: content,
+        description: newContent,
         image: image,
       });
 
       if (response.status === 200) {
         console.log("Новость обновлена");
         toast.success("Новость добавлена");
-        navigate("/news");
+        // navigate("/news");
       }
     } catch (err) {
       toast.error("Ошибка");
     }
   }
+
+  React.useEffect(()=>{
+    console.log(newContent)
+  },[newContent])
 
   const [data, setData] = React.useState();
 
@@ -75,7 +84,7 @@ function NewNews() {
           Добавить картинку
         </Fab>
       </Box>
-      <img style={{ width: 500 }} src={`http://localhost:8000${image}`} />
+      <img style={{ width: 500 }} src={`${process.env.REACT_APP_API_KEY}${image}`} />
       <div className={style.use_input}>
         <TextField
           id="standard-basic"
@@ -101,7 +110,7 @@ function NewNews() {
         <Editor
           content={content}
           setContent={setContent}
-          handleChangeFile={handleChangeFile}
+          setNewContent={setNewContent}
         />
 
         <Button onClick={() => updateNews()} variant="contained">

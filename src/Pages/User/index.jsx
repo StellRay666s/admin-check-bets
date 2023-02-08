@@ -16,7 +16,7 @@ function UsersPage() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   async function getUsers() {
-    const response = await axiosClient.get("http://localhost:8000/getUsers", {
+    const response = await axiosClient.get(`${process.env.REACT_APP_API_KEY}/getUsers`, {
       headers: {
         authorization: token,
       },

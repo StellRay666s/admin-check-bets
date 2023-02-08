@@ -19,7 +19,7 @@ function UserPage() {
   const [isAddPartner, setIsAddPatner] = React.useState(false);
 
   async function getUser(query) {
-    const response = await axiosClient.get(`http://localhost:8000/getUser`, {
+    const response = await axiosClient.get(`${process.env.REACT_APP_API_KEY}/getUser`, {
       params: {
         id: query.id,
       },
@@ -40,7 +40,7 @@ function UserPage() {
 
   async function saveChangesOnAdminUsers() {
     const response = await axiosClient.patch(
-      "http://localhost:8000/saveChangeOnAdmin",
+    `${process.env.REACT_APP_API_KEY}/saveChangeOnAdmin`,
       {
         id: query.id,
         name: name,

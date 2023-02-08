@@ -18,7 +18,7 @@ function LoginPage() {
 
   async function login() {
     try {
-      const response = await axiosClient.post("http://localhost:8000/login", {
+      const response = await axiosClient.post(`${process.env.URL}/login`, {
         email: email,
         password: password,
       });
