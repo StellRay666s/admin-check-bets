@@ -18,7 +18,7 @@ function LoginPage() {
 
   async function login() {
     try {
-      const response = await axiosClient.post(`${process.env.REACT_APP_API_KEY}/login`, {
+      const response = await axiosClient.post(`${process.env.REACT_APP_API_KEY}/loginAdmin`, {
         email: email,
         password: password,
       });

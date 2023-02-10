@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "../Pages/Login";
+import MetaTags from "../Pages/MetaTags";
 import NewNews from "../Pages/NewNews";
 import NewsPage from "../Pages/News";
 import NewsOnePage from "../Pages/NewsOnePage";
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/user/:id" element={<UserPage />} />
       <Route path="/news/:id" element={<NewsOnePage />} />
       <Route path="/newNews" element={<NewNews />} />
+      <Route path='/metaTags' element={<MetaTags/>} />
     </Routes>
   );
 }

@@ -36,6 +36,7 @@ function Header() {
   const pages = [
     { title: "Пользователи", path: "/" },
     { title: "Новости", path: "/news" },
+    {title:"Страницы", path:'/metaTags'}
   ];
 
   function logout() {
