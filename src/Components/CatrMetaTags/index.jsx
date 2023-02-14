@@ -5,14 +5,22 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 
-function CartMetaTags({titles,url}) {
+function CartMetaTags({titles,url, description}) {
     const [title, setTitle] = React.useState("")
-    const [description, setDescription] = React.useState("")
+    const [descriptions, setDescription] = React.useState("")
+
+
+
+    React.useEffect(()=>{
+        setTitle(titles)
+        setDescription(description)
+    },[])
+
 
     async function postMetaTags(){
-        const response = await axios.post('http://localhost:8000/addDataMetaTags',{
+        const response = await axios.post(`${process.env.REACT_APP_API_KEY}/addDataMetaTags`,{
             title:title,
-            description:description,
+            description:descriptions,
             url:url
         })
 
@@ -23,8 +31,9 @@ function CartMetaTags({titles,url}) {
     }
 
     React.useEffect(()=>{
-        
-    },[])
+            console.log(title,
+                descriptions)
+    },[title, descriptions])
 
 
     return (
@@ -32,8 +41,7 @@ function CartMetaTags({titles,url}) {
 
     <div className={style.block_page_metatags}>
         <div className={style.blocks}>
-                <h2>{titles}</h2>
-           
+                <h2>{titles} {url}</h2>
                 <TextField
                 style={{width:'300px'}}
                 value={title}
@@ -42,7 +50,7 @@ function CartMetaTags({titles,url}) {
                 />
                 <TextField
 
-                value={description}
+                value={descriptions}
                 placeholder='Описание'
                 onChange={(e)=>setDescription(e.target.value)}
 
