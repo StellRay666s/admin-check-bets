@@ -21,8 +21,8 @@ function NewsPage() {
   const navigate = useNavigate();
 
   async function getNews() {
-    const response = await axios.get(`${process.env.REACT_APP_API_KEY}/news`);
-    setNews(response.data.rows);
+    const response = await axios.get(`${process.env.REACT_APP_API_KEY}/getAllNews`);
+    setNews(response.data);
   }
 
   React.useEffect(() => {
