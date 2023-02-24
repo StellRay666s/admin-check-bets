@@ -18,10 +18,13 @@ function LoginPage() {
 
   async function login() {
     try {
-      const response = await axiosClient.post(`${process.env.REACT_APP_API_KEY}/loginAdmin`, {
-        email: email,
-        password: password,
-      });
+      const response = await axiosClient.post(
+        `${process.env.REACT_APP_API_KEY}/loginAdmin`,
+        {
+          email: email,
+          password: password,
+        }
+      );
 
       if (response.status === 200) {
         dispatch(setUser(response.data.user));
@@ -50,6 +53,7 @@ function LoginPage() {
         id="standard-basic"
         label="Пароль"
         variant="standard"
+        type={"password"}
       />
       <Button onClick={() => login()} variant="outlined">
         Войти
