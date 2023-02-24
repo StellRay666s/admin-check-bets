@@ -17,21 +17,26 @@ function UserPage() {
   const [email, setEmail] = React.useState("");
   const [tariffs, setTarifs] = React.useState([]);
   const [isAddPartner, setIsAddPatner] = React.useState(false);
+  const [telegramLink, setTelegramLink] = React.useState("");
 
   async function getUser(query) {
-    const response = await axiosClient.get(`${process.env.REACT_APP_API_KEY}/getUser`, {
-      params: {
-        id: query.id,
-      },
-      headers: {
-        authorization: token,
-      },
-    });
+    const response = await axiosClient.get(
+      `${process.env.REACT_APP_API_KEY}/getUser`,
+      {
+        params: {
+          id: query.id,
+        },
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     setName(response.data.name);
     setLastName(response.data.lastname);
     setPhone(response.data.phone);
     setEmail(response.data.email);
     setTarifs(response.data.tariffs);
+    setTelegramLink(response.data.teltegramLink);
   }
 
   function handleChangeCheckbox() {
@@ -40,7 +45,7 @@ function UserPage() {
 
   async function saveChangesOnAdminUsers() {
     const response = await axiosClient.patch(
-    `${process.env.REACT_APP_API_KEY}/saveChangeOnAdmin`,
+      `${process.env.REACT_APP_API_KEY}/saveChangeOnAdmin`,
       {
         id: query.id,
         name: name,
@@ -100,6 +105,13 @@ function UserPage() {
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           label="Фамилия"
+          variant="standard"
+        />
+        <TextField
+          id="standard-basic"
+          value={telegramLink}
+          onChange={(e) => setTelegramLink(e.target.value)}
+          label="Телеграм"
           variant="standard"
         />
         <TextField

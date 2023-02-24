@@ -17,13 +17,15 @@ function NewsOnePage() {
   const navigate = useNavigate();
   const [content, setContent] = React.useState();
 
-  
   async function handleChangeFile(e) {
     try {
       const formData = new FormData();
       const file = e.target.files[0];
       formData.append("image", file);
-      const { data } = await axios.post(`${process.env.REACT_APP_API_KEY}/upload`, formData);
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_KEY}/upload`,
+        formData
+      );
       console.log(file);
       setImage(data.url);
     } catch (err) {
@@ -53,10 +55,9 @@ function NewsOnePage() {
 
   const [newContent, setNewContent] = React.useState("");
 
-  React.useEffect(()=>{
-    console.log(newContent)
-
-  },[newContent])
+  React.useEffect(() => {
+    console.log(newContent);
+  }, [newContent]);
 
   function setNewData(data) {
     setContent(data);
@@ -73,7 +74,7 @@ function NewsOnePage() {
     );
 
     if (response.status === 200) {
-      console.log("Новость обновлена");
+      toast.success("Новость успешно обновлена");
     }
   }
 
