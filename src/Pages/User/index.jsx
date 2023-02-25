@@ -16,11 +16,14 @@ function UsersPage() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   async function getUsers() {
-    const response = await axiosClient.get(`${process.env.REACT_APP_API_KEY}/getUsers`, {
-      headers: {
-        authorization: token,
-      },
-    });
+    const response = await axiosClient.get(
+      `${process.env.REACT_APP_API_KEY}/getUsers`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
 
     setUser(response.data);
     if (response.status === 401) {
@@ -70,7 +73,12 @@ function UsersPage() {
                     <TableCell align="center">{row.lastname}</TableCell>
                     <TableCell align="center">{row.email}</TableCell>
                     <TableCell align="center">{row.phone}</TableCell>
-                    <TableCell align="center">{row.tariffs}</TableCell>
+                    <TableCell
+                      style={{ display: "flex", gap: "10px" }}
+                      align="center"
+                    >
+                      {row.tariffs}
+                    </TableCell>
                   </TableRow>
                 </Link>
               ))}
