@@ -10,22 +10,28 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../axiosClient";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 function UsersPage() {
   const [user, setUser] = React.useState([]);
   const token = localStorage.getItem("token");
+  const [page, setPage] = React.useState(1)
+  const [count, seCount] = React.useState()
   const navigate = useNavigate();
   async function getUsers() {
     const response = await axiosClient.get(
-      `${process.env.REACT_APP_API_KEY}/getUsers`,
+      `${process.env.REACT_APP_API_KEY}/getUsers?offset=${(page*10)-10}`,
       {
         headers: {
           authorization: token,
         },
       }
     );
-    console.log(response.data)
+
     setUser(response.data.rows);
+    seCount(response.data.count)
+    console.log(response.data)
     if (response.status === 401) {
       navigate("/login");
     }
@@ -33,7 +39,13 @@ function UsersPage() {
 
   React.useEffect(() => {
     getUsers();
-  }, []);
+    console.log(page)
+  }, [page]);
+
+  function handleChange(e, value){
+    setPage(value)
+    console.log(page)
+  }
 
   return (
     <div>
@@ -53,7 +65,6 @@ function UsersPage() {
                 <TableCell align="center">Фамилия</TableCell>
                 <TableCell align="center">Эл.Почта</TableCell>
                 <TableCell align="center">Телефон</TableCell>
-                <TableCell align="center">Тариф(ы)</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -73,15 +84,12 @@ function UsersPage() {
                     <TableCell align="center">{row.lastname}</TableCell>
                     <TableCell align="center">{row.email}</TableCell>
                     <TableCell align="center">{row.phone}</TableCell>
-                    <TableCell
-                      style={{ display: "flex", gap: "10px" }}
-                      align="center"
-                    >
-                      {row.tariffs}
-                    </TableCell>
                   </TableRow>
                 </Link>
               ))}
+                <Stack spacing={2}>
+      <Pagination onChange={handleChange}  page={page}  count={Math.ceil(count/10)} color="primary" />
+    </Stack>
             </TableBody>
           </Table>
         </TableContainer>

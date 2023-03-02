@@ -25,7 +25,11 @@ function NewNews() {
       const file = e.target.files[0];
       console.log(file);
       formData.append("image", file);
-      const { data, status } = await axios.post(`${process.env.REACT_APP_API_KEY}/upload`, formData);
+      const { data, status } = await axios.post(`${process.env.REACT_APP_API_KEY}/upload`, formData,{
+        headers: {
+          AcceptEncoding: 'gzip'
+        },
+      });
       setImage(data.url);
     } catch (err) {
       console.log(err);
@@ -40,6 +44,11 @@ function NewNews() {
         title: title,
         description: newContent,
         image: image,
+      
+      },{
+        headers: {
+          AcceptEncoding: 'gzip'
+        },
       });
 
       if (response.status === 200) {

@@ -12,22 +12,37 @@ import { Container, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../axiosClient";
 import axios from "axios";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 function NewsPage() {
   const [news, setNews] = React.useState([]);
   const [title, setTitle] = React.useState("");
   const [text, setText] = React.useState("");
   const [image, setImage] = React.useState("");
+  const [page, setPage] = React.useState(1)
+  const [count, setCount] = React.useState()
+
   const navigate = useNavigate();
 
   async function getNews() {
-    const response = await axios.get(`${process.env.REACT_APP_API_KEY}/getAllNews`);
-    setNews(response.data);
+    const response = await axios.get(`${process.env.REACT_APP_API_KEY}/getAllNews?offset=${(page*10)-10}`,{
+      headers: {
+        AcceptEncoding: 'gzip'
+      },
+    });
+    setNews(response.data.rows);
+    setCount(response.data.count)
   }
 
   React.useEffect(() => {
     getNews();
-  }, []);
+  }, [page]);
+
+  function handleChange(e, value){
+    setPage(value)
+    console.log(page)
+  }
 
   return (
     <div>
@@ -73,6 +88,9 @@ function NewsPage() {
                     </TableRow>
                   </Link>
                 ))}
+                 <Stack spacing={2}>
+        <Pagination onChange={handleChange}  page={page}  count={Math.ceil(count/10)} color="primary" />
+        </Stack>
               </TableBody>
             </Table>
           </TableContainer>
