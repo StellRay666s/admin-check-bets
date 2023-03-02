@@ -24,8 +24,8 @@ function UsersPage() {
         },
       }
     );
-
-    setUser(response.data);
+    console.log(response.data)
+    setUser(response.data.rows);
     if (response.status === 401) {
       navigate("/login");
     }

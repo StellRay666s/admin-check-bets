@@ -12,6 +12,7 @@ function MetaTags(){
     console.log(data)
     if(status=== 200){
       setMetaTags(data)
+      console.log(data)
     }
   }
 
@@ -25,7 +26,7 @@ function MetaTags(){
           <Header />
           <div className={style.wrapper}>
         {metaTags.map((item)=>
-        <CartMetaTags url={item.url} titles={item.title} description={item.description}/>)}
+        <CartMetaTags h1Title={item.h1} h2Title={item.h2} url={item.url} titles={item.title} description={item.description}/>)}
           </div>
         </>
     )
