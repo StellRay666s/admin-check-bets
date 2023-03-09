@@ -7,6 +7,7 @@ import NewsPage from "../Pages/News";
 import NewsOnePage from "../Pages/NewsOnePage";
 import UsersPage from "../Pages/User";
 import UserPage from "../Pages/UserPage";
+import Promos from "../Pages/Promos";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/news/:id" element={<NewsOnePage />} />
       <Route path="/newNews" element={<NewNews />} />
       <Route path='/metaTags' element={<MetaTags/>} />
+      <Route path="/promos" element={<Promos/>}/>
     </Routes>
   );
 }

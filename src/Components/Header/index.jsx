@@ -36,7 +36,8 @@ function Header() {
   const pages = [
     { title: "Пользователи", path: "/" },
     { title: "Новости", path: "/news" },
-    {title:"Страницы", path:'/metaTags'}
+    {title:"Страницы", path:'/metaTags'},
+    {title:"Промо акции", path:'/promos'}
   ];
 
   function logout() {
